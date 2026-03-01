@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Log: Shonen Edition</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00d4ff">
+    <style>
+        :root {
+            --bg: #0f0f12;
+            --surface: #1c1c21;
+            --accent: #00d4ff; /* Neon Blue */
+            --danger: #ff0055; /* Power Red */
+            --text: #e0e0e0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .quest-card {
+            background: var(--surface);
+            width: 100%;
+            max-width: 450px;
+            padding: 25px;
+            border-radius: 5px;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+            position: relative;
+        }
+
+        /* Diagonal "manga" stripe effect */
+        .quest-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 5px;
+            background: linear-gradient(90deg, var(--accent), var(--danger));
+        }
+
+        h1 {
+            text-align: center;
+            font-style: italic;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        input {
+            flex: 1;
+            background: #2a2a32;
+            border: 1px solid var(--accent);
+            color: white;
+            padding: 12px;
+            border-radius: 0;
+            outline: none;
+        }
+
+        .btn-add {
+            background: var(--accent);
+            color: black;
+            border: none;
+            padding: 0 20px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        ul { list-style: none; padding: 0; }
+
+        li {
+            background: #25252b;
+            margin-bottom: 12px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-right: 4px solid var(--accent);
+            transition: 0.2s;
+        }
+
+        li:hover {
+            transform: skewX(-2deg);
+            background: #2d2d35;
+        }
+
+        .btn-del {
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quest-card">
+        <h1>Active Quests</h1>
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="Enter new quest...">
+            <button class="btn-add" onclick="addTask()">Deploy</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        function addTask() {
+            const input = document.getElementById("taskInput");
+            if (input.value.trim() === "") return;
+
+            const li = document.createElement("li");
+            li.innerHTML = `<span>▶ ${input.value}</span> 
+                            <button class="btn-del" onclick="this.parentElement.remove()">X</button>`;
+            
+            document.getElementById("taskList").appendChild(li);
+            input.value = "";
+        }
+
+        // SW for Mobile Icon
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js');
+        }
+    </script>
+</body>
+</html>
